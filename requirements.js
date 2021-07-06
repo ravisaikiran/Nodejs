@@ -31,8 +31,10 @@
 //Update or add authors for a book✅
 
 //Delete
-//Delete a book
-//delete an author
+//Delete a book✅
+//delete an author✅
+
+//-------------------------------------------------------------------------------------------------------------------
 
 //Authors
 
@@ -49,7 +51,9 @@
 //Update author Name✅
 
 //Delete
-//dete an author
+//dete an author✅
+
+//---------------------------------------------------------------------------------------------------------------------------------
 
 //Publications
 
@@ -64,7 +68,8 @@
 
 //Put
 //Update publication name using id✅
-//Update/Add new books to publications
+//Update/Add new books to publications✅
 
 //Delete
-//Delete a book from publication
+//Delete a book from publication✅
+//Delete a publication✅

@@ -304,5 +304,110 @@ booky.put("/publication/update/book/:isbn",(request,response)=>{
    return response.json({books:database.books,publications:database.publication,message:"Successfully updated books to publication"});
 });
 
+/* 
+Route       :/book/delete
+Description :Delete a book
+Access      :PUBLIC
+Parameter   :isbn
+Methods     :DELETE
+*/
+booky.delete("/book/delete/:isbn",(request,response)=>{
+    //update book database
+    const updatedBookDatabase=database.books.filter((book)=>book.ISBN!=request.params.isbn);
+    database.books=updatedBookDatabase;
+    return response.json({books:database.books,message:"Successfully updated books After deleting a particular book"});
+});
+
+/* 
+Route       :/book/delete/author
+Description :Delete an author from a book
+Access      :PUBLIC
+Parameter   :isbn,authorId
+Methods     :DELETE
+*/
+booky.delete("/book/delete/author/:isbn/:authorId",(request,response)=>{
+   //update book database
+   database.books.forEach((book)=>{
+     if(book.ISBN===request.params.isbn){
+        const newAuthorList=book.author.filter((author)=>
+            author!==parseInt(request.params.authorId)
+        );
+        book.author=newAuthorList;
+        return;
+     }
+   });
+
+   //update author database
+   database.author.forEach((author)=>{
+    if(author.id===parseInt(request.params.authorId)){
+       const newBookList=author.books.filter((book)=>
+           book!==request.params.isbn
+       );
+       author.books=newBookList;
+       return;
+    }
+  });
+  return response.json({books:database.books,authors:database.author,message:"Successfully updated books and authors After deleting a particular Author"});
+});
+
+/* 
+Route       :/author/delete
+Description :Delete an author 
+Access      :PUBLIC
+Parameter   :authorId
+Methods     :DELETE
+*/
+booky.delete("/author/delete/:authorID",(request,response)=>{
+    const newAuthorList=database.author.filter((author)=>author.id!==parseInt(request.params.authorID));
+    database.author=newAuthorList;
+    return response.json({authors:database.author,message:"Successfully updated authors After deleting a particular Author"});
+});
+
+/* 
+Route       :/publication/delete/book
+Description :Delete a book from publication
+Access      :PUBLIC
+Parameter   :isbn,pubId
+Methods     :DELETE
+*/
+booky.delete("/publication/delete/book/:isbn/:pubId",(request,response)=>{
+    //update publication database
+    database.publication.forEach((publication)=>{
+      if(publication.Id===parseInt(request.params.pubId)){
+         const newBookList=publication.books.filter((book)=>
+            book!==request.params.isbn
+         );
+         publication.books=newBookList;
+         return;
+      }
+    });
+ 
+    //update book database
+    database.books.forEach((book)=>{
+     if(book.isbn===request.params.isbn){
+        const newPublicationList=book.publication.filter((publication)=>
+            publication!==parseInt(request.params.pubId)
+        );
+        book.publication=newPublicationList;
+        return;
+     }
+   });
+   return response.json({books:database.books,publications:database.publication,message:"Successfully updated books and publications After deleting a particular publication"});
+ });
+ 
+
+/* 
+Route       :/publication/delete
+Description :Delete a publication
+Access      :PUBLIC
+Parameter   :Id
+Methods     :DELETE
+*/
+booky.delete("/publication/delete/:id",(request,response)=>{
+    const newPublicationList=database.publication.filter((publication)=>publication.id!==parseInt(request.params.id));
+    database.publication=newPublicationList;
+    return response.json({publications:database.publication,message:"Successfully updated publications After deleting a particular publication"});
+});
+
 booky.listen(3000,()=>console.log("Server is running"));
 
