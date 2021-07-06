@@ -9,6 +9,16 @@ const books=[
         publication:[1,2],
         category:["tech","programming","comics","education"],
     },
+    {
+        ISBN:"1234",
+        title:"Getting Started with MERN-API",
+        pubdate:"28-04-2007",
+        language:"en",
+        numPage:300,
+        author:[1,2],
+        publication:[1],
+        category:["tech","programming"],
+    },
 ];
 
 const author=[
@@ -22,6 +32,7 @@ const author=[
         name:"sailaja",
         books:["1234Book"],
     },
+  
 ];
 
 const publication=[
@@ -29,7 +40,17 @@ const publication=[
         id:1,
         name:"writex",
         books:["1234Book"],
-    }
+    },
+    {
+        id:2,
+        name:"Ridex",
+        books:[],
+    },
+    {
+        id:3,
+        name:"sai anusha",
+        books:[],
+    },
 ];
 
 module.exports={books,author,publication};
