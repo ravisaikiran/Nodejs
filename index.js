@@ -7,7 +7,13 @@ const { request, response } = require("express");
 const express=require("express");
 const mongoose=require("mongoose");
 
+//Database
 const database=require("./database/database");
+
+//Models
+const BookModels=require("./database/book");
+const AuthorModels=require("./database/author");
+const PublicationModels=require("./database/publication");
 
 //Initialisation
 const booky=express();
