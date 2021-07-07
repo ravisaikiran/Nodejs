@@ -40,7 +40,7 @@ const author=[
   
 ];
 
-const publication=[
+let publication=[
     {
         id:1,
         name:"writex",

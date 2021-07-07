@@ -1,14 +1,28 @@
+require("dotenv").config();
+
+
 const { request, response } = require("express");
 
+//FrameWork
 const express=require("express");
+const mongoose=require("mongoose");
 
-const database=require("./database");
+const database=require("./database/database");
 
 //Initialisation
 const booky=express();
 
 //configuration
 booky.use(express.json());
+
+//Establish DataBase Connection
+mongoose.connect(process.env.MONGO_URL,
+{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+}).then(()=>console.log("connection established!!!!!!!!"));
 
 /* 
 Route       : /
@@ -373,7 +387,7 @@ Methods     :DELETE
 booky.delete("/publication/delete/book/:isbn/:pubId",(request,response)=>{
     //update publication database
     database.publication.forEach((publication)=>{
-      if(publication.Id===parseInt(request.params.pubId)){
+      if(publication.id===parseInt(request.params.pubId)){
          const newBookList=publication.books.filter((book)=>
             book!==request.params.isbn
          );
@@ -384,7 +398,7 @@ booky.delete("/publication/delete/book/:isbn/:pubId",(request,response)=>{
  
     //update book database
     database.books.forEach((book)=>{
-     if(book.isbn===request.params.isbn){
+     if(book.ISBN===request.params.isbn){
         const newPublicationList=book.publication.filter((publication)=>
             publication!==parseInt(request.params.pubId)
         );
