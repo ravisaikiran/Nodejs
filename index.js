@@ -259,7 +259,7 @@ booky.put("/book/update/title/:isbn",async(request,response)=>{
             title:request.body.newBookTitle
         },
         {
-            new:true,
+            new:true,//to get new updated data
         }
         );
     //database.books.forEach((book)=>{
@@ -275,25 +275,56 @@ booky.put("/book/update/title/:isbn",async(request,response)=>{
 Route       : /book/update/author
 Description :Update or add authors for a book
 Access      :PUBLIC
-Parameter   :isbn
+Parameter   :isbn,authorId
 Methods     :PUT
 */
-booky.put("/book/update/author/:isbn/:authorId",(request,response)=>{
+booky.put("/book/update/author/:isbn/:authorId",async(request,response)=>{
+
     //Updating book database
-    database.books.forEach((book)=>{
-        if(book.ISBN===request.params.isbn){
-            return book.author.push(parseInt(request.params.authorId));
-        }
-    });
 
-    ////Updating author database
-    database.author.forEach((author)=>{
-        if(author.id===parseInt(request.params.authorId)){
-            return author.books.push(request.params.isbn);
+    const updatedBook=await BookModel.findOneAndUpdate(
+        {
+            ISBN:request.params.isbn
+        },
+        {
+            $addToSet:{
+                author:parseInt(request.params.authorId)
+            },
+        },
+        {
+            new:true,
         }
-    });
+        );
 
-    return response.json({books:database.books,authors:database.author});
+    //database.books.forEach((book)=>{
+     //   if(book.ISBN===request.params.isbn){
+     //       return book.author.push(parseInt(request.params.authorId));
+     //   }
+    //});
+
+    //Updating author database
+
+    const updatedAuthor=await AuthorModel.findOneAndUpdate(
+        {
+            id:parseInt(request.params.authorId)
+        },
+        {
+            $addToSet:{
+                books:request.params.isbn
+            },
+        },
+        {
+            new:true,
+        }
+        );
+
+    //database.author.forEach((author)=>{
+    //    if(author.id===parseInt(request.params.authorId)){
+    //        return author.books.push(request.params.isbn);
+    //    }
+    //});
+
+    return response.json({books:updatedBook,authors:updatedAuthor});
 });
 
 /* 
