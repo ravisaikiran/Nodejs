@@ -394,11 +394,13 @@ Access      :PUBLIC
 Parameter   :isbn
 Methods     :DELETE
 */
-booky.delete("/book/delete/:isbn",(request,response)=>{
+booky.delete("/book/delete/:isbn",async(request,response)=>{
     //update book database
-    const updatedBookDatabase=database.books.filter((book)=>book.ISBN!=request.params.isbn);
-    database.books=updatedBookDatabase;
-    return response.json({books:database.books,message:"Successfully updated books After deleting a particular book"});
+    
+    const updatedBook =await BookModel.findOneAndDelete({ISBN:request.params.isbn});
+    //const updatedBookDatabase=database.books.filter((book)=>book.ISBN!=request.params.isbn);
+    //database.books=updatedBookDatabase;
+    return response.json({books:updatedBook,message:"Successfully updated books After deleting a particular book"});
 });
 
 /* 
@@ -408,29 +410,58 @@ Access      :PUBLIC
 Parameter   :isbn,authorId
 Methods     :DELETE
 */
-booky.delete("/book/delete/author/:isbn/:authorId",(request,response)=>{
+booky.delete("/book/delete/author/:isbn/:authorId",async (request,response)=>{
+
    //update book database
-   database.books.forEach((book)=>{
-     if(book.ISBN===request.params.isbn){
-        const newAuthorList=book.author.filter((author)=>
-            author!==parseInt(request.params.authorId)
-        );
-        book.author=newAuthorList;
-        return;
-     }
-   });
+   const updatedBook=await BookModel.findOneAndUpdate(
+       {
+           ISBN:request.params.isbn
+        },
+       {
+           $pull:{
+            author:parseInt(request.params.authorId)
+           }
+       },
+       {
+           new:true
+       }
+       );
+  // database.books.forEach((book)=>{
+   //  if(book.ISBN===request.params.isbn){
+    //    const newAuthorList=book.author.filter((author)=>
+    //        author!==parseInt(request.params.authorId)
+    //    );
+    //    book.author=newAuthorList;
+    //    return;
+    // }
+   //});
 
    //update author database
-   database.author.forEach((author)=>{
-    if(author.id===parseInt(request.params.authorId)){
-       const newBookList=author.books.filter((book)=>
-           book!==request.params.isbn
-       );
-       author.books=newBookList;
-       return;
+   
+   const updatedAuthor=await AuthorModel.findOneAndUpdate(
+    {
+        id:parseInt(request.params.authorId)
+     },
+    {
+        $pull:{
+         books:request.params.isbn
+        }
+    },
+    {
+        new:true
     }
-  });
-  return response.json({books:database.books,authors:database.author,message:"Successfully updated books and authors After deleting a particular Author"});
+    );
+
+   //database.author.forEach((author)=>{
+   // if(author.id===parseInt(request.params.authorId)){
+    //   const newBookList=author.books.filter((book)=>
+    //       book!==request.params.isbn
+     //  );
+     //  author.books=newBookList;
+  //     return;
+  //  }
+  //});
+  return response.json({books:updatedBook,authors:updatedAuthor,message:"Successfully updated books and authors After deleting a particular Author"});
 });
 
 /* 
