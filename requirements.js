@@ -32,7 +32,7 @@
 
 //Delete
 //Delete a book✅✔
-//delete an author✅
+//delete an author✅✔
 
 //-------------------------------------------------------------------------------------------------------------------
 
@@ -48,10 +48,10 @@
 //add new author✅✔
 
 //Put
-//Update author Name✅
+//Update author Name✅✔
 
 //Delete
-//dete an author✅
+//delete an author✅✔
 
 //---------------------------------------------------------------------------------------------------------------------------------
 
@@ -67,9 +67,9 @@
 //Add new publications✅✔
 
 //Put
-//Update publication name using id✅
-//Update/Add new books to publications✅
+//Update publication name using id✅✔
+//Update/Add new books to publications✅✔
 
 //Delete
-//Delete a book from publication✅
-//Delete a publication✅
+//Delete a book from publication✅✔
+//Delete a publication✅✔
